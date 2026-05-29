@@ -1,65 +1,122 @@
 # Bottleneck Research CLI
 
-Agent research context CLI for Bottleneck Research.
+[![License: MIT](https://img.shields.io/badge/license-MIT-black.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](pyproject.toml)
+[![Research only](https://img.shields.io/badge/boundary-research%20only-111111.svg)](#research-boundary)
 
-This tool exports Bottleneck Research public research data into JSON or Markdown so you can use it inside Codex, Claude Code, Cursor, notebooks, shell workflows, or your own agents.
+**Bottleneck Research CLI** exports public Bottleneck Research data into
+agent-readable JSON or Markdown. Use it inside Codex, Claude Code, Cursor,
+notebooks, shell workflows, or your own research agents.
 
-It is a research interface, not a trading terminal. It does not provide buy/sell instructions, position sizing, return promises, or personalized investment advice.
+English | [中文](README.zh-CN.md)
+
+Website: [bottleneckresearch.com](https://bottleneckresearch.com)  
+Public data feed: [bottleneckresearch.com/data.json](https://bottleneckresearch.com/data.json)
+
+## What It Does
+
+The CLI turns AI supply-chain bottleneck research into structured context:
+
+- current research view and market regime
+- AI infrastructure and application-layer candidate pools
+- chain-level views for optical, storage, power, PCB/CCL, passive components, packaging and testing
+- evidence freshness, missing proof and source quality checks
+- decision-check context for a single ticker
+- compact context blocks for external agents
+
+It is designed for research workflows where a user asks an agent a question such
+as:
+
+> Can I buy 06088.HK?
+
+The CLI does **not** answer with buy/sell instructions. It converts that question
+into an evidence, valuation, freshness, crowding and counter-evidence review.
 
 ## Install
 
-Run directly:
+Recommended:
 
 ```bash
+pipx install git+https://github.com/chatjesus/bottleneck-research-cli.git
+```
+
+Alternative:
+
+```bash
+uv tool install git+https://github.com/chatjesus/bottleneck-research-cli.git
+```
+
+Or install with pip:
+
+```bash
+python -m pip install git+https://github.com/chatjesus/bottleneck-research-cli.git
+```
+
+Run from a local clone:
+
+```bash
+git clone https://github.com/chatjesus/bottleneck-research-cli.git
+cd bottleneck-research-cli
 python br_research_cli.py context --format markdown
 ```
 
-Or install locally:
+After installation, the command is:
 
 ```bash
-pipx install .
-br context --format markdown
+br
 ```
 
-The CLI reads the public feed from `https://bottleneckresearch.com/data.json` by default. For offline testing:
+## Quick Start
+
+The public feed is used by default. No API key is required.
 
 ```bash
-python br_research_cli.py --data-file tests/fixtures/sample_data.json context
+br context --format markdown
+br decision-check 06088.HK --format markdown
+br candidates --chain optical --limit 10 --format markdown
+br freshness --format markdown
+```
+
+If you want to specify the public endpoint explicitly:
+
+```bash
+br --base-url https://bottleneckresearch.com context --format markdown
+```
+
+For offline testing:
+
+```bash
+br --data-file tests/fixtures/sample_data.json context --format markdown
 ```
 
 ## Common Commands
 
+### Agent Context
+
 ```bash
-br context --format markdown
-br signals
-br candidates --chain optical
-br chain storage --format markdown
-br decision-check 06088.HK --format markdown
-br compare 06088.HK 00894.HK 01888.HK --format markdown
-br freshness
-br macro --format markdown
-br graph --chain optical
+br agent-context --format markdown
 ```
 
-## Decision Checks
+Emits a compact research context that can be pasted into Codex, Claude Code, or
+another agent.
 
-`decision-check` converts a buy/sell style question into a research checklist:
+### Decision Check
+
+```bash
+br decision-check 06088.HK --format markdown
+```
+
+Returns:
 
 - research bucket
 - evidence completeness
-- missing orders/capacity/ASP/EPS/management disclosure evidence
+- missing orders, capacity, ASP, EPS/revenue expectation or management disclosure evidence
 - price-volume status
 - crowding risk
 - freshness status
 - next research action
 
-Example:
-
-```bash
-br decision-check 06088.HK --format markdown
-```
-
-Output shape:
+Example output shape:
 
 ```markdown
 # Decision Check: 06088.HK
@@ -74,24 +131,94 @@ Output shape:
 Verify customer revenue split, orders, capacity, margin and management disclosure.
 ```
 
-## Agent Usage
-
-In Codex or another coding agent:
+### Chain View
 
 ```bash
-br context --format markdown
+br chain storage --format markdown
+br candidates --chain optical --limit 10 --format markdown
+br graph --chain power --format json
+```
+
+### Freshness and Risk Checks
+
+```bash
+br freshness --format markdown
+br macro --format markdown
+br signals --format markdown
+```
+
+### Compare Tickers
+
+```bash
+br compare 06088.HK 00894.HK 01888.HK --format markdown
+```
+
+## Agent Usage Pattern
+
+Run:
+
+```bash
 br decision-check 06088.HK --format markdown
-br chain optical --format markdown
 ```
 
 Then ask your agent:
 
-> Based on this Bottleneck Research context, convert "can I buy 06088.HK?" into an evidence, valuation, freshness, crowding and counter-evidence review. Do not provide personalized trading advice.
+```text
+Based on this Bottleneck Research context, convert "can I buy 06088.HK?"
+into an evidence, valuation, freshness, crowding and counter-evidence review.
+Do not provide personalized trading advice.
+```
 
-## Public vs Private Data
+## Public Data and API Keys
 
-The public CLI does not require an API key. Future private workspaces or higher-frequency endpoints may use `BR_API_KEY`, but the open-source CLI only depends on the public research feed.
+The open-source CLI reads:
 
-## Boundary
+```bash
+https://bottleneckresearch.com/data.json
+```
 
-Bottleneck Research is for public information organization, research lead generation and risk identification. It is not investment advice, a recommendation, an offer to buy/sell securities, or a substitute for independent diligence.
+No API key is required for the public endpoint.
+
+The CLI supports `--api-key` and `BR_API_KEY` for future protected endpoints,
+but they are not needed for the current public feed.
+
+## Research Boundary
+
+Bottleneck Research CLI is a **research context tool**. It helps organize public
+market data, supply-chain evidence, candidate pools, freshness checks and risk
+signals for further diligence.
+
+It is **not**:
+
+- investment advice
+- a buy/sell recommendation engine
+- a trading signal service
+- a portfolio or position-sizing tool
+- a substitute for independent diligence
+
+All outputs should be reviewed against primary sources, valuation, liquidity,
+risk tolerance and personal suitability.
+
+## Development
+
+```bash
+git clone https://github.com/chatjesus/bottleneck-research-cli.git
+cd bottleneck-research-cli
+python -m unittest discover -s tests
+python br_research_cli.py --data-file tests/fixtures/sample_data.json schema
+```
+
+## Contributing
+
+Issues and pull requests are welcome when they improve research context quality,
+data provenance, agent interoperability, documentation or test coverage. See
+[CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Security
+
+Please do not open public issues for sensitive data exposure or security
+problems. See [SECURITY.md](SECURITY.md).
+
+## License
+
+MIT License. See [LICENSE](LICENSE).

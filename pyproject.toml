@@ -26,6 +26,7 @@ classifiers = [
 [project.urls]
 Homepage = "https://bottleneckresearch.com"
 Repository = "https://github.com/chatjesus/bottleneck-research-cli"
+Documentation = "https://github.com/chatjesus/bottleneck-research-cli#readme"
 
 [project.scripts]
 br = "br_research_cli:main"
