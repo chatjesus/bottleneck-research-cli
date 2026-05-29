@@ -1,0 +1,64 @@
+{
+  "generated_at": "2026-05-29T11:35:00+08:00",
+  "sources": {
+    "latest_data_date": "2026-05-29"
+  },
+  "signal": {
+    "title": "Hardware chain remains ahead",
+    "body": "Hardware 20D return remains ahead, but short-term spread needs verification."
+  },
+  "research_policy": {
+    "public_use": "research_input_only",
+    "requires_independent_judgment": true
+  },
+  "macro_regime": [
+    {
+      "indicator": "CBOE VIX",
+      "proxy_ticker": "^VIX",
+      "latest_value": 22.5,
+      "unit": "index",
+      "return_20d": 0.22,
+      "level_state": "elevated",
+      "benchmark": "VIX: <16 calm; 16-20 watch; 20-25 elevated; >=30 panic."
+    }
+  ],
+  "watchlist": [
+    {
+      "ticker": "06088.HK",
+      "company": "FIT Hon Teng",
+      "chain": "Optical/network",
+      "subchain": "AI server interconnect",
+      "research_gap_score": 19.2,
+      "decision_bucket": "continue diligence",
+      "required_next_evidence": "Cloud/DC revenue split, orders, capacity and margin proof.",
+      "missing_expectation_reason": "Missing orders/capacity/ASP/EPS or revenue expectation evidence."
+    }
+  ],
+  "gainers": [
+    {
+      "ticker": "06088.HK",
+      "return_1d": 0.16,
+      "return_20d": 0.55,
+      "volume_shock_vs_20d": 1.2
+    }
+  ],
+  "volume": [
+    {
+      "ticker": "06088.HK",
+      "return_1d": 0.16,
+      "return_20d": 0.55,
+      "volume_shock_vs_20d": 2.1
+    }
+  ],
+  "supply_chain_events": [],
+  "trigger_events": [
+    {
+      "ticker": "06088.HK",
+      "event_type": "price_volume_breakout",
+      "severity": "critical",
+      "reason": "Single-day move requires follow-through and primary evidence check.",
+      "generated_at": "2026-05-29T11:35:00+08:00"
+    }
+  ],
+  "source_quality": []
+}
